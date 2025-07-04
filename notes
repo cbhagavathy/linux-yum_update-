@@ -1,32 +1,7 @@
-You're seeing the error:
-
-```
-Cannot find a valid baseurl for repo: base/7/x86_64
-```
-
-This means your **CentOS 7** system can't reach the **YUM repository** to update or install packages — either because the **CentOS 7 mirrors have been deprecated**, or **network/repo config issues**.
-
----
-
-### ✅ Fix Options
-
----
-
-## 🔧 Option 1: Use Vault Mirror (CentOS 7 has moved to vault.centos.org)
-
-Edit the YUM repo files to use the **CentOS Vault**, which stores old releases.
-
-1. Edit the main repo file:
-
-```bash
 sudo vi /etc/yum.repos.d/CentOS-Base.repo
-```
 
-2. **Comment out** all the existing `mirrorlist=` lines (put a `#` in front of them)
+Comment out** all the existing `mirrorlist=` lines (put a `#` in front of them)
 
-3. **Uncomment and replace** the `baseurl=` lines like below:
-
-```ini
 [base]
 name=CentOS-7 - Base
 baseurl=http://vault.centos.org/7.9.2009/os/$basearch/
@@ -47,51 +22,10 @@ baseurl=http://vault.centos.org/7.9.2009/extras/$basearch/
 gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-```
 
-4. Save and exit `vi`.
+Save and exit `vi`
 
-5. Clean YUM cache and try updating:
-
-```bash
+Clean YUM cache and try updating:
 yum clean all
 yum makecache
 yum update -y
-```
-
----
-
-## ✅ Optional: Install `yum-utils` if needed
-
-If `yum-config-manager` is unavailable:
-
-```bash
-yum install yum-utils -y
-```
-
----
-
-## 🧪 Option 2: Check Internet Connection
-
-Make sure your VM can reach the internet:
-
-```bash
-ping -c 4 google.com
-```
-
-If it fails, fix your **network settings** (likely set to NAT or Bridged improperly in VirtualBox).
-
----
-
-## 🧼 Option 3: Switch to Modern Repos (Rocky or AlmaLinux)
-
-CentOS 7 is **EOL in June 2024**, so it’s recommended to move to:
-
-* **AlmaLinux 8/9**
-* **Rocky Linux 8/9**
-
-These are drop-in replacements for RHEL/CentOS.
-
----
-
-Would you like help switching to AlmaLinux or Rocky? Or want a ready-made `.repo` file for vault?
